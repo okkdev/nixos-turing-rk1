@@ -22,6 +22,10 @@
       pkgs = import nixpkgs { inherit system; };
     in
     {
+      nixosModules = {
+        hardwareConfig = import ./modules/turingrk1.nix;
+      };
+
       nixosConfigurations = {
         turingrk1 = nixpkgs.lib.nixosSystem {
           inherit system;
