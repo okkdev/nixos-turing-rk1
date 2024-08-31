@@ -6,8 +6,7 @@
   ...
 }:
 let
-  rootPartitionUUID = "14e19a7b-0ae0-484d-9d54-43bd6fdc20c7";
-  uboot = pkgs.callPackage ../packages/u-boot { };
+  rootPartitionUUID = "7a684895-6ef1-4586-98d9-2d2013e98286";
 in
 {
   imports = [ "${pkgs.path}/nixos/modules/installer/sd-card/sd-image.nix" ];
@@ -19,11 +18,11 @@ in
       "raid1"
     ];
 
-    kernelParams = [
+    kernelParams = lib.mkForce [
       "root=UUID=${rootPartitionUUID}"
       "rootfstype=ext4"
-      "console=ttyS2,1500000"
-      "console=ttyS9,115200"
+      "console=ttyS0,115200"
+      "loglevel=7"
     ];
 
     loader = {
@@ -79,7 +78,7 @@ in
     '';
 
     postBuildCommands = ''
-      dd if=${uboot}/u-boot-rockchip.bin of=$img seek=1 bs=32k conv=notrunc
+      dd if=${pkgs.ubootTuringRK1}/u-boot-rockchip.bin of=$img seek=1 bs=32k conv=notrunc
     '';
   };
 }
